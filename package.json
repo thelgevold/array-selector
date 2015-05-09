@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "tests": "karma start"
+    "tests": "karma start",
+    "sample": "webpack"
   },
   "devDependencies": {
     "babel-loader": "^5.0.0",
