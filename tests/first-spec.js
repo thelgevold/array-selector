@@ -23,6 +23,14 @@ describe('select-first', () => {
 
     });
 
+    it('should return the first person1', () => {
+
+        var person = $select.from(people).first(p => p.age > 10);
+
+        expect(person.firstName).toBe('Joe');
+
+    });
+
     it('should return undefined', () => {
 
         var person = $select.from([]).first(p => p.age === 44);

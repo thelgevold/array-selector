@@ -38,10 +38,11 @@ export class _where{
             return this.list[0];
         }
 
-        this.list.map(i => {
+        this.list.some(i => {
 
             if(expr(i) === true){
                 first = i;
+                return true;
             }
         });
 
