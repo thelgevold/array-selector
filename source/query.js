@@ -1,4 +1,6 @@
-export class _where{
+import {_whereClause} from './where-clause';
+
+export class _query{
 
     constructor(list){
         this.list = list;
@@ -6,14 +8,8 @@ export class _where{
 
     where(expr){
 
-        if(!this.list){
-            return [];
-        }
-
-        return this.list.filter(i => {
-            return expr(i);
-        });
-
+        let w = new _whereClause(this.list);
+        return w.filter(expr);
     }
 
     any(expr){

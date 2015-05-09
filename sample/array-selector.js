@@ -63,7 +63,7 @@
 	            var $select = new _select2._select();
 	            var res = $select.from([1, 2, 3]).where(function (a) {
 	                return a === 3 || a === 1;
-	            });
+	            }).toArray();
 	            console.log(res);
 	        }
 	    }]);
@@ -88,7 +88,7 @@
 	    value: true
 	});
 
-	var _where2 = __webpack_require__(2);
+	var _query2 = __webpack_require__(2);
 
 	var _select = (function () {
 	    function _select() {
@@ -98,7 +98,7 @@
 	    _createClass(_select, [{
 	        key: 'from',
 	        value: function from(list) {
-	            return new _where2._where(list);
+	            return new _query2._query(list);
 	        }
 	    }]);
 
@@ -111,45 +111,75 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
 
-	var _where = (function () {
-	    function _where(list) {
-	        _classCallCheck(this, _where);
+	var _whereClause2 = __webpack_require__(3);
+
+	var _query = (function () {
+	    function _query(list) {
+	        _classCallCheck(this, _query);
 
 	        this.list = list;
 	    }
 
-	    _createClass(_where, [{
-	        key: "where",
+	    _createClass(_query, [{
+	        key: 'where',
 	        value: function where(expr) {
 
-	            if (!this.list) {
-	                return [];
-	            }
+	            var w = new _whereClause2._whereClause(this.list);
+	            return w.filter(expr);
+	        }
+	    }, {
+	        key: 'any',
+	        value: function any(expr) {
 
-	            var res = [];
-	            this.list.map(function (i) {
+	            var found = false;
+	            this.list.some(function (i) {
 
 	                if (expr(i) === true) {
-	                    res.push(i);
+	                    found = true;
+	                    return false;
 	                }
 	            });
 
-	            return res;
+	            return found;
 	        }
 	    }, {
-	        key: "first",
+	        key: 'all',
+	        value: (function (_all) {
+	            function all(_x) {
+	                return _all.apply(this, arguments);
+	            }
+
+	            all.toString = function () {
+	                return _all.toString();
+	            };
+
+	            return all;
+	        })(function (expr) {
+
+	            var all = true;
+	            this.list.some(function (i) {
+
+	                if (expr(i) === false) {
+	                    all = false;
+	                }
+	            });
+
+	            return all;
+	        })
+	    }, {
+	        key: 'first',
 	        value: (function (_first) {
-	            function first(_x) {
+	            function first(_x2) {
 	                return _first.apply(this, arguments);
 	            }
 
@@ -170,20 +200,102 @@
 	                return this.list[0];
 	            }
 
-	            this.list.map(function (i) {
+	            this.list.some(function (i) {
 
 	                if (expr(i) === true) {
 	                    first = i;
+	                    return true;
 	                }
 	            });
+
 	            return first;
 	        })
 	    }]);
 
-	    return _where;
+	    return _query;
 	})();
 
-	exports._where = _where;
+	exports._query = _query;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _queryResult2 = __webpack_require__(4);
+
+	var _whereClause = (function () {
+	    function _whereClause(list) {
+	        _classCallCheck(this, _whereClause);
+
+	        this.list = list;
+	    }
+
+	    _createClass(_whereClause, [{
+	        key: 'filter',
+	        value: function filter(expr) {
+
+	            var res = [];
+
+	            if (this.list) {
+	                this.list.map(function (i) {
+
+	                    if (expr(i) === true) {
+	                        res.push(i);
+	                    }
+	                });
+	            }
+
+	            return new _queryResult2._queryResult(res);
+	        }
+	    }]);
+
+	    return _whereClause;
+	})();
+
+	exports._whereClause = _whereClause;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _queryResult = (function () {
+	    function _queryResult(list) {
+	        _classCallCheck(this, _queryResult);
+
+	        this.list = list;
+	    }
+
+	    _createClass(_queryResult, [{
+	        key: "toArray",
+	        value: function toArray() {
+	            return this.list;
+	        }
+	    }]);
+
+	    return _queryResult;
+	})();
+
+	exports._queryResult = _queryResult;
 
 /***/ }
 /******/ ]);
