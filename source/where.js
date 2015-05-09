@@ -4,21 +4,26 @@ export class _where{
         this.list = list;
     }
 
+    groupBy(expr){
+        var res = {};
+        this.list.map(i => {
+
+            (res[expr(i).toString()] || []).push(i);
+
+        });
+    }
+
     where(expr){
 
         if(!this.list){
             return [];
         }
 
-        var res = [];
-        this.list.map(i => {
+        return this.list.filter(i => {
 
-            if(expr(i) === true){
-                res.push(i);
-            }
+            return expr(i);
         });
 
-        return res;
     }
 
     first(expr){
@@ -39,6 +44,7 @@ export class _where{
                 first = i;
             }
         });
+
         return first;
     }
 
