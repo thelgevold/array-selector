@@ -13,7 +13,7 @@ describe('Any', () => {
         expect(any).toBe(true);
     });
 
-    it('should return true when none exists', function(){
+    it('should return false when none exists', function(){
         var any = $select.from(items).any(i => i.price === 1000);
 
         expect(any).toBe(false);

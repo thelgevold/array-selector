@@ -30,6 +30,19 @@ export class _where{
         return found;
     }
 
+    all(expr){
+
+        var all = true;
+        this.list.some(i => {
+
+            if(expr(i) === false){
+                all = false;
+            }
+        });
+
+        return all;
+    }
+
     first(expr){
 
         if(!this.list || this.list.length === 0){
