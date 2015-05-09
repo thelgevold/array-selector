@@ -6,6 +6,10 @@ export class _where{
 
     where(expr){
 
+        if(!this.list){
+            return [];
+        }
+
         var res = [];
         this.list.map(i => {
 
@@ -18,12 +22,24 @@ export class _where{
     }
 
     first(expr){
+
+        if(!this.list || this.list.length === 0){
+            return undefined;
+        }
+
+        let first;
+
+        if(!expr){
+            return this.list[0];
+        }
+
         this.list.map(i => {
 
             if(expr(i) === true){
-                return i;
+                first = i;
             }
         });
+        return first;
     }
 
 

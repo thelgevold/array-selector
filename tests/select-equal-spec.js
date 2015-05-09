@@ -40,5 +40,12 @@ describe('select-where-equal-operator', () => {
 
    });
 
+   it('should return empty list', function(){
+       var res = $select.from([]).where(a => a.firstName === 'Joe' || a.firstName === 'Jane');
+       expect(res.length).toBe(0);
+
+       res = $select.from().where(a => a.firstName === 'Joe' || a.firstName === 'Jane');
+       expect(res.length).toBe(0);
+   });
 
 });
