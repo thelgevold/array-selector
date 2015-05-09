@@ -4,15 +4,6 @@ export class _where{
         this.list = list;
     }
 
-    groupBy(expr){
-        var res = {};
-        this.list.map(i => {
-
-            (res[expr(i).toString()] || []).push(i);
-
-        });
-    }
-
     where(expr){
 
         if(!this.list){
@@ -20,10 +11,23 @@ export class _where{
         }
 
         return this.list.filter(i => {
-
             return expr(i);
         });
 
+    }
+
+    any(expr){
+
+        var found = false;
+        this.list.some(i => {
+
+            if(expr(i) === true){
+                found = true;
+                return false;
+            }
+        });
+
+        return found;
     }
 
     first(expr){

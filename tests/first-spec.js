@@ -5,7 +5,7 @@ describe('select-first', () => {
 
     let $select = new _select();
     let helper = new testHelper();
-    let people = helper.getPeople()
+    let people = helper.getPeople();
 
     it('should return the first person1', () => {
 
