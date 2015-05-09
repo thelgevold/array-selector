@@ -8,4 +8,8 @@ export class _queryResult{
         return this.list;
     }
 
+    take(n){
+        return this.list.slice(0, n);
+    }
+
 }
